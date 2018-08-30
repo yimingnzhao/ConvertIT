@@ -1,0 +1,24 @@
+{
+  "comment": "converstions are number of SI units for one unit",
+  "mass": {
+    "kilogram": {
+      "abbreviation": "kg",
+      "conversion": 1.0
+    },
+    "pound": {
+      "abbreviation": "lb",
+      "conversion": 0.453592
+    },
+    "tonne": {
+      "abbreviation": "t",
+      "conversion": 1000.0
+    }
+  },
+
+  "length": {
+    "meter": {
+      "abbreviation": "m",
+      "conversion": 1.0
+    }
+  }
+}
