@@ -6,3 +6,7 @@ class Unit(ndb.Model):
     abbreviation = ndb.StringProperty(required=True)
     convert_units = ndb.StringProperty(repeated=True)
     convert_values = ndb.FloatProperty(repeated=True)
+
+class UnitType(ndb.Model):
+    type = ndb.StringProperty(required=True)
+    units = ndb.StringProperty(repeated=True)
