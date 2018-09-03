@@ -3,7 +3,7 @@
   <head>
     <style>
 .dropbtn {
-    background-color: #4CAF50;
+    background-color: red;
     color: white;
     padding: 16px;
     font-size: 16px;
@@ -35,20 +35,24 @@
 
 .dropdown:hover .dropdown-content {display: block;}
 
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
+.dropdown:hover .dropbtn {background-color: red;}
 </style>
 </head>
+
+
 <body>
-
-<h2>Hoverable Dropdown</h2>
-<p>Move the mouse over the button to open the dropdown menu.</p>
-
 <div class="dropdown">
-  <button class="dropbtn">Dropdown</button>
+  <button style="height:50px;width:100px" class="dropbtn">Units</button>
   <div class="dropdown-content">
     {{units|safe}}
   </div>
 </div>
+
+<script>
+  function typeFunction(str){
+    document.querySelector('.dropbtn').innerHTML = str;
+  }
+</script>
 
 </body>
 </html>

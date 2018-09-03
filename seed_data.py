@@ -49,8 +49,3 @@ def get_seed_data():
         second_key = Unit(name='second', type='time', abbreviation='s',
             convert_units = ['0', '1'],
             convert_values = [0.0, 1.0]).put()
-
-    if len(Unit.query().filter(Unit.name=='kelvin').fetch()) == 0:
-        kelvin_key = Unit(name='kelvin', type='temperature', abbreviation='K',
-            convert_units = ['0', '1'],
-            convert_values = [0.0, 1.0]).put()

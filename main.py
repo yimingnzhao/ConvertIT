@@ -35,7 +35,7 @@ class MainHandler(webapp2.RequestHandler):
                 temp_string = ''
                 temp_string+= str(unit.name)
                 template_vars[str(unit_type.type)] = temp_string
-            unit_types+= '<p>' + str(unit_type.type) + '</p>'
+            unit_types+= '<button style="height:30px;width:150px" onclick="typeFunction(\'' + str(unit_type.type).capitalize() + '\')">' + str(unit_type.type) + '</button><br>'
         template_vars['units'] = unit_types
 
 
