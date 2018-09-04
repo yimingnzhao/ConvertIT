@@ -1,58 +1,115 @@
 <!DOCTYPE HTML>
 <html>
-  <head>
-    <style>
-.dropbtn {
-    background-color: red;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-}
 
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
+<head>
+  <style>
+    .dropbtn {
+      background-color: red;
+      color: white;
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+    }
 
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
 
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 150px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
 
-.dropdown-content a:hover {background-color: #ddd;}
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
 
-.dropdown:hover .dropdown-content {display: block;}
+    .dropdown-content a:hover {background-color: #ddd;}
 
-.dropdown:hover .dropbtn {background-color: red;}
-</style>
+    .dropdown:hover .dropdown-content {display: block;}
+
+    .dropdown:hover .dropbtn {background-color: rgb(190, 0, 0);}
+
+    .parent {overflow-y: hidden;}
+
+    .inline-block {display: inline-block; vertical-align: top; white-space: normal;}
+  </style>
 </head>
 
 
 <body>
-<div class="dropdown">
-  <button style="height:50px;width:100px" class="dropbtn">Units</button>
-  <div class="dropdown-content">
-    {{units|safe}}
-  </div>
-</div>
 
-<script>
-  function typeFunction(str){
-    document.querySelector('.dropbtn').innerHTML = str;
-  }
-</script>
+  <div>
+    <div class="dropdown inline-block">
+      <button style="height:50px; width:100px;" value="" class="dropbtn">Units</button>
+      <div class="dropdown-content">
+        {{units|safe}}
+      </div>
+    </div>
+
+    <div class="inline-block">
+      <pre>     </pre>
+    </div>
+
+    <div class="inline-block">
+      <input type="number" name="num-value" step="any">
+    </div>
+
+    <div class="inline-block">
+      <pre>     </pre>
+    </div>
+
+    <div class="inline-block">
+      <select id="from-select" name="from-unit" >
+        <option value="" disabled selected hidden>Choose here</option>
+      </select>
+    </div>
+
+    <div class="inline-block">
+      <pre>     </pre>
+    </div>
+
+    <div class="inline-block">
+      <select id="to-select" name="to-unit">
+        <option value="" disabled selected hidden>Choose here</option>
+      </select>
+    </div>
+
+  </div>
+
+  <script>
+    function typeFunction(str) {
+      document.querySelector('.dropbtn').innerHTML = str.charAt(0).toUpperCase() + str.slice(1);
+      document.querySelector('.dropbtn').setAttribute('value', str);
+      getConvert(str);
+    }
+
+    function getConvert(type) {
+      let fromSelect = document.getElementById('from-select');
+      let toSelect = document.getElementById('to-select');
+
+      /* clearning current select options */
+      while (document.querySelector('.from-select-child') !== null) {
+        var fromChild = document.querySelector('.from-select-child');
+        fromChild.parentNode.removeChild(fromChild);
+      }
+      while (document.querySelector('.to-select-child') !== null) {
+        var fromChild = document.querySelector('.to-select-child');
+        fromChild.parentNode.removeChild(fromChild);
+      }
+
+      {{code|safe}}
+    }
+  </script>
 
 </body>
+
 </html>
