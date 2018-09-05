@@ -60,7 +60,8 @@
     </div>
 
     <div class="inline-block">
-      <input type="number" name="num-value" step="any">
+      <input type="number" id="number-input" name="num-value" step="any" onchange="convertUnit()">
+
     </div>
 
     <div class="inline-block">
@@ -68,8 +69,8 @@
     </div>
 
     <div class="inline-block">
-      <select id="from-select" name="from-unit" >
-        <option value="" disabled selected hidden>Choose here</option>
+      <select id="from-select" name="from-unit" onchange="convertUnit()">
+        <option value="" class="from-select-child" disabled selected hidden>Choose here</option>
       </select>
     </div>
 
@@ -78,19 +79,30 @@
     </div>
 
     <div class="inline-block">
-      <select id="to-select" name="to-unit">
-        <option value="" disabled selected hidden>Choose here</option>
+      <select id="to-select" name="to-unit" onchange="convertUnit()">
+        <option value="" class="to-select-child" disabled selected hidden>Choose here</option>
       </select>
+    </div>
+
+    <div class="inline-block">
+      <pre>     </pre>
+    </div>
+
+    <div class="inline-block">
+      <p id="converted-answer"></p>
     </div>
 
   </div>
 
   <script>
     function typeFunction(str) {
+      document.getElementById('number-input').value = "";
+      document.getElementById('converted-answer').innerHTML = "";
       document.querySelector('.dropbtn').innerHTML = str.charAt(0).toUpperCase() + str.slice(1);
       document.querySelector('.dropbtn').setAttribute('value', str);
       getConvert(str);
     }
+
 
     function getConvert(type) {
       let fromSelect = document.getElementById('from-select');
@@ -106,7 +118,36 @@
         fromChild.parentNode.removeChild(fromChild);
       }
 
+      var fromOpt = document.createElement("option");
+      fromOpt.setAttribute("value", "");
+      fromOpt.setAttribute("class", "from-select-child");
+      fromOpt.setAttribute("disabled", "");
+      fromOpt.setAttribute("selected", "");
+      fromOpt.setAttribute("hidden", "");
+      fromOpt.innerHTML = "Choose here";
+      fromSelect.appendChild(fromOpt);
+
+      var toOpt = document.createElement("option");
+      toOpt.setAttribute("value", "");
+      toOpt.setAttribute("class", "to-select-child");
+      toOpt.setAttribute("disabled", "");
+      toOpt.setAttribute("selected", "");
+      toOpt.setAttribute("hidden", "");
+      toOpt.innerHTML = "Choose here";
+      toSelect.appendChild(toOpt);
+      /* embedding js code from python */
       {{code|safe}}
+    }
+
+    function convertUnit() {
+      if (document.getElementById('number-input').value==="" || document.getElementById('from-select').value==="" || document.getElementById('to-select').value==="") {
+        return;
+      }
+      let type = document.querySelector('.dropbtn').value;
+      let fromUnit = document.getElementById('from-select').value;
+      let toUnit =  document.getElementById('to-select').value;
+      let answer = document.getElementById('converted-answer');
+      {{ans|safe}}
     }
   </script>
 

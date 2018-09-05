@@ -10,42 +10,22 @@ def get_seed_data():
 
     if len(UnitType.query().filter(UnitType.type=='length').fetch()) == 0:
         length_key = UnitType(type='length',
-        units = ['1', 'I']).put()
-
-    if len(UnitType.query().filter(UnitType.type=='area').fetch()) == 0:
-        area_key = UnitType(type='area',
-        units = ['1', 'I']).put()
-
-    if len(UnitType.query().filter(UnitType.type=='volume').fetch()) == 0:
-        volume_key = UnitType(type='volume',
-        units = ['1', 'I']).put()
-
-    if len(UnitType.query().filter(UnitType.type=='time').fetch()) == 0:
-        time_key = UnitType(type='time',
-        units = ['1', 'I']).put()
-
-    if len(UnitType.query().filter(UnitType.type=='mass').fetch()) == 0:
-        mass_key = UnitType(type='mass',
-        units = ['1', 'I']).put()
+        units = ['meter', 'foot', 'inch']).put()
 
 
 
-
-
-
-
-
-    if len(Unit.query().filter(Unit.name=='kilogram').fetch()) == 0:
-        kilogram_key = Unit(name='kilogram', type='mass', abbreviation='kg',
-            convert_units = ['0', '1'],
-            convert_values = [0.0, 1.0]).put()
 
     if len(Unit.query().filter(Unit.name=='meter').fetch()) == 0:
         meter_key = Unit(name='meter', type='length', abbreviation='m',
-            convert_units = ['0', '1'],
-            convert_values = [0.0, 1.0]).put()
+            convert_units = ['meter', 'foot', 'inch'],
+            convert_values = [1.0, 3.28084, 39.37008]).put()
 
-    if len(Unit.query().filter(Unit.name=='second').fetch()) == 0:
-        second_key = Unit(name='second', type='time', abbreviation='s',
-            convert_units = ['0', '1'],
-            convert_values = [0.0, 1.0]).put()
+    if len(Unit.query().filter(Unit.name=='foot').fetch()) == 0:
+        foot_key = Unit(name='foot', type='length', abbreviation='ft',
+            convert_units = ['foot', 'meter', 'inch'],
+            convert_values = [1.0, 0.3048, 12.0]).put()
+
+    if len(Unit.query().filter(Unit.name=='inch').fetch()) == 0:
+        inch_key = Unit(name='inch', type='length', abbreviation='in',
+            convert_units = ['inch', 'meter', 'foot'],
+            convert_values = [1.0, 0.0254, 0.0833333]).put()
