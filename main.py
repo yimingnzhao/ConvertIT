@@ -22,8 +22,10 @@ current_jinja_environment = jinja2.Environment(
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         #get general units
-        get_seed_data()
-        time.sleep(3)
+        if len(UnitType.query().filter(UnitType.type=="seed-data-test").fetch())==0:
+            test_key = UnitType(type="seed-data-test", units=['test', 'data']).put()
+            get_seed_data()
+            time.sleep(3)
 
         template_vars = {}
 
@@ -37,7 +39,8 @@ class MainHandler(webapp2.RequestHandler):
 
         for unit_type in unit_type_query:
             unit_query = Unit.query().filter(Unit.type==str(unit_type.type)).fetch()
-            unit_types+= '<button style="height:30px;width:150px" onclick="typeFunction(\'' + str(unit_type.type) + '\')">' + str(unit_type.type) + '</button><br>'
+            if not unit_type.type=='seed-data-test':
+                unit_types+= '<button style="height:30px;width:150px" onclick="typeFunction(\'' + str(unit_type.type) + '\')">' + str(unit_type.type) + '</button><br>'
 
             unit_query = Unit.query().filter(Unit.type==unit_type.type).fetch()
             js_format_code+= 'if (type==="' + str(unit_type.type) + '") {'

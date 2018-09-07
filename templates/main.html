@@ -38,8 +38,6 @@
 
     .dropdown:hover .dropbtn {background-color: rgb(190, 0, 0);}
 
-    .parent {overflow-y: hidden;}
-
     .inline-block {display: inline-block; vertical-align: top; white-space: normal;}
   </style>
 </head>
@@ -49,7 +47,7 @@
 
   <div>
     <div class="dropdown inline-block">
-      <button style="height:50px; width:100px;" value="" class="dropbtn">Units</button>
+      <button style="height:50px; width:120px;" value="" class="dropbtn">Units</button>
       <div class="dropdown-content">
         {{units|safe}}
       </div>
@@ -148,6 +146,44 @@
       let toUnit =  document.getElementById('to-select').value;
       let answer = document.getElementById('converted-answer');
       {{ans|safe}}
+      if (answer.innerHTML === 'NaN') {
+        if (fromUnit === 'kelvin' && toUnit === 'celsius') {
+          let temp = parseFloat(document.getElementById('number-input').value);
+          temp-=273.15;
+          answer.innerHTML = temp;
+        }
+        if (fromUnit === 'kelvin' && toUnit === 'fahrenheit') {
+          let temp = parseFloat(document.getElementById('number-input').value);
+          temp-=273.15;
+          temp*=9/5;
+          temp+=32;
+          answer.innerHTML = temp;
+        }
+        if (fromUnit === 'celsius' && toUnit === 'kelvin') {
+          let temp = parseFloat(document.getElementById('number-input').value);
+          temp+=273.15;
+          answer.innerHTML = temp;
+        }
+        if (fromUnit === 'celsius' && toUnit === 'fahrenheit') {
+          let temp = parseFloat(document.getElementById('number-input').value);
+          temp*=9/5;
+          temp+=32;
+          answer.innerHTML = temp;
+        }
+        if (fromUnit === 'fahrenheit' && toUnit === 'kelvin') {
+          let temp = parseFloat(document.getElementById('number-input').value);
+          temp-=32;
+          temp*=5/9;
+          temp+=273.15
+          answer.innerHTML = temp;
+        }
+        if (fromUnit === 'fahrenheit' && toUnit === 'celsius') {
+          let temp = parseFloat(document.getElementById('number-input').value);
+          temp-=32;
+          temp*=5/9;
+          answer.innerHTML = temp;
+        }
+      }
     }
   </script>
 
