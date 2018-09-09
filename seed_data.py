@@ -177,8 +177,6 @@ def get_seed_data():
     kilojoule_key = Unit(name='kilojoule', type='energy', abbreviation='kJ',
         convert_units = ['joule', 'calorie', 'british-thermal-unit', 'electron-volt', 'kilowatt-hour', 'kilojoule', 'megajoule'],
         convert_values = ['1000', '239.006', '0.947817', '6.242e+21', '0.000277778', '1', '0.001']).put()
-
-
     megajoule_key = Unit(name='megajoule', type='energy', abbreviation='MJ',
         convert_units = ['joule', 'calorie', 'british-thermal-unit', 'electron-volt', 'kilowatt-hour', 'kilojoule', 'megajoule'],
         convert_values = ['1e+6', '239006', '947.817', '6.242e+24', '0.277778', '1000', '1']).put()
