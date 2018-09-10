@@ -141,7 +141,7 @@ def get_seed_data():
     us_quart_key = Unit(name='quart-US', type='volume', abbreviation='qt',
         convert_units = ['meter-cubed', 'foot-cubed', 'liter', 'gallon-US', 'pint-US', 'quart-US', 'fluid-ounce'],
         convert_values = ['0.000946353', '0.0334201', '0.946353', '0.25', '2', '1', '32']).put()
-    fluid_ounce_key = Unit(name='fluid_ounce', type='volume', abbreviation='fl oz',
+    fluid_ounce_key = Unit(name='fluid-ounce', type='volume', abbreviation='fl oz',
         convert_units = ['meter-cubed', 'foot-cubed', 'liter', 'gallon-US', 'pint-US', 'quart-US', 'fluid-ounce'],
         convert_values = ['2.9574e-5', '0.00104438', '0.0295735', '0.0078125', '0.0625', '0.03125', '1']).put()
 
