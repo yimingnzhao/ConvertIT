@@ -3,6 +3,19 @@
 
 <head>
   <style>
+  .button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 25px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .button:hover {
+    background-color: green;
+  }
     .dropbtn {
       background-color: red;
       color: white;
@@ -92,6 +105,12 @@
 
   </div>
 
+
+  <br>
+  <br>
+  <br>
+  <button class="button" onclick="redirect('/add-unit')">Add Unit</button>
+
   <script>
     function typeFunction(str) {
       document.getElementById('number-input').value = "";
@@ -145,6 +164,10 @@
       let fromUnit = document.getElementById('from-select').value;
       let toUnit =  document.getElementById('to-select').value;
       let answer = document.getElementById('converted-answer');
+      let unitNames = [];
+      let unitAbbreviations = [];
+      {{abbreviations|safe}}
+
       {{ans|safe}}
       if (answer.innerHTML === 'NaN') {
         if (fromUnit === 'kelvin' && toUnit === 'celsius') {
@@ -184,6 +207,15 @@
           answer.innerHTML = temp;
         }
       }
+
+      if (unitNames.includes(toUnit)) {
+        var abbrev = unitAbbreviations.slice(unitNames.indexOf(toUnit), unitNames.indexOf(toUnit) + 1);
+        answer.innerHTML+= " " + abbrev;
+      }
+    }
+
+    function redirect(redirectURL) {
+      document.location.href = redirectURL;
     }
   </script>
 

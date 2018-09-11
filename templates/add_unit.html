@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+
+  </head>
+
+  <body>
+    <form name="form" action="/confirm-add-unit">
+      Unit Type:
+      <select id="select-type" name="unit-type" onchange="getUnitsFromType()">
+        <option value="" disabled selected hidden>Choose here</option>
+        {{typeCode|safe}}
+      </select>
+      <br>
+      <br>
+
+      Unit Name:
+      <input name="unit-name" type="text">
+      <br>
+      <br>
+
+      Unit Abbreviation:
+      <input name="unit-abbreviation" type="text">
+      <br>
+      <br>
+
+      Convert to SI:
+      <input name="convert-to" type="number">
+      <select id="select-unit" name="to-unit">
+        <option class="unit-select" value="" disabled selected hidden>Choose here</option>
+      </select>
+      <br>
+      <br>
+
+      <input type="submit" onclick="return verifyForm()">
+    </form>
+
+    <script>
+      function getUnitsFromType() {
+        let type = document.getElementById("select-type").value;
+        let selectUnit = document.getElementById("select-unit");
+
+        /* remove current type options */
+        while (document.querySelector(".unit-select") !== null) {
+          var unitOption = document.querySelector('.unit-select');
+          unitOption.parentNode.removeChild(unitOption);
+        }
+
+        /* add 'Choose here' option */
+        var unitOption = document.createElement("option");
+        unitOption.setAttribute("value", "");
+        unitOption.setAttribute("class", "unit-select");
+        unitOption.setAttribute("disabled", "");
+        unitOption.setAttribute("selected", "");
+        unitOption.setAttribute("hidden", "");
+        unitOption.innerHTML = "Choose here";
+        selectUnit.appendChild(unitOption);
+
+        {{unitCode|safe}}
+      }
+    </script>
+
+    <script>
+
+      function verifyForm() {
+        var form = document.forms["form"];
+
+        /* check all form input elements */
+        if (form["unit-type"].value === "") {
+          alert("Please select a unit type.");
+          return false;
+        }
+        if (form["unit-name"].value === "") {
+          alert("Please input a unit name.");
+          return false;
+        }
+        if (form["unit-abbreviation"].value === "") {
+          alert("Please input a unit abbreviation.");
+          return false;
+        }
+        if (form["convert-to"].value === "") {
+          alert("Please input a conversion factor.");
+          return false;
+        }
+        if (form["to-unit"].value === "") {
+          alert("Please select a conversion unit.");
+          return false;
+        }
+
+        /* check if unit name exists */
+        var unitsArray = [];
+        {{arrayPush|safe}}
+        if (unitsArray.includes(form["unit-name"].value)) {
+          alert("This unit name already exists.\nPlease input a different unit name.");
+          return false;
+        }
+        /* submits form if everything is filled */
+        return true;
+      }
+    </script>
+  </body>
+
+</html>
