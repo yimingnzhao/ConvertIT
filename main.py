@@ -14,6 +14,8 @@ current_jinja_environment = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
+add_unit_dict = {}
+
 
 class HomeHandler(webapp2.RequestHandler):
     def get(self):
@@ -124,8 +126,55 @@ class AddUnitHandler(webapp2.RequestHandler):
 
 
 class ConfirmAddUnitHandler(webapp2.RequestHandler):
+    def post(self):
+        template_vars = {}
+
+        add_unit_dict['unit_type'] = str(self.request.get('unit-type'))
+        add_unit_dict['unit_name'] = str(self.request.get('unit-name'))
+        add_unit_dict['unit_abbreviation'] = str(self.request.get('unit-abbreviation'))
+        add_unit_dict['convert_to'] = float(self.request.get('convert-to'))
+        add_unit_dict['to_unit'] = str(self.request.get('to-unit'))
+
+        confirm_html_code = ''
+
+        confirm_html_code+= '<p>' + self.request.get('unit-type') + '</p>'
+        confirm_html_code+= '<p>' + self.request.get('unit-name') + '</p>'
+        confirm_html_code+= '<p>' + self.request.get('unit-abbreviation') + '</p>'
+        confirm_html_code+= '<p>' + self.request.get('convert-to') + '</p>'
+        confirm_html_code+= '<p>' + self.request.get('to-unit') + '</p>'
+
+        template_vars['confirm'] = confirm_html_code
+
+        confirm_add_unit_template = current_jinja_environment.get_template('templates/confirm_add_unit.html')
+        self.response.write(confirm_add_unit_template.render(template_vars))
+
+
+class ConfirmedAddUnitHandler(webapp2.RequestHandler):
     def get(self):
-        return
+        units_list = []
+        values_list = []
+        units_list.append(add_unit_dict['unit_name'])
+        values_list.append(str(1))
+
+        convert_type = Unit.query().filter(Unit.type==add_unit_dict['unit_type']).fetch()
+        convert_to_unit = Unit.query().filter(Unit.name==add_unit_dict['to_unit']).fetch()[0]
+
+        for unit in convert_type:
+            units_list.append(unit.name)
+            values_list.append(str(add_unit_dict['convert_to'] * convert_to_unit.convert_values[convert_to_unit.convert_units.index(unit.name)]))
+
+            unit.convert_units.append(add_unit_dict['unit_name'])
+            unit.convert_values.append(str(float(add_unit_dict['convert_to'] ** -1)))
+            unit.put()
+
+        add_unit = Unit(name = add_unit_dict['unit_name'],
+            type = add_unit_dict['unit_type'],
+            abbreviation = add_unit_dict['unit_abbreviation'],
+            convert_units = units_list,
+            convert_values = values_list).put()
+
+        self.redirect('/convert')
+
 
 
 
@@ -137,4 +186,5 @@ app = webapp2.WSGIApplication([
     ('/convert', ConvertHandler),
     ('/add-unit', AddUnitHandler),
     ('/confirm-add-unit', ConfirmAddUnitHandler),
+    ('/confirmed_add_unit', ConfirmedAddUnitHandler),
 ])
