@@ -102,7 +102,7 @@ class AddUnitHandler(webapp2.RequestHandler):
 
         unit_type_query = UnitType.query().fetch()
         for unit_type in unit_type_query:
-            if not unit_type.type == 'seed-data-test':
+            if not unit_type.type == 'seed-data-test' and not unit_type.type == 'temperature':
                 html_type_code+= '<option value="' + str(unit_type.type) + '">' + str(unit_type.type) + '</option>'
                 js_unit_code+= 'if (type==="' + str(unit_type.type) + '") {'
                 unit_query = Unit.query().filter(Unit.type==unit_type.type).fetch()
@@ -137,11 +137,11 @@ class ConfirmAddUnitHandler(webapp2.RequestHandler):
 
         confirm_html_code = ''
 
-        confirm_html_code+= '<p>' + self.request.get('unit-type') + '</p>'
-        confirm_html_code+= '<p>' + self.request.get('unit-name') + '</p>'
-        confirm_html_code+= '<p>' + self.request.get('unit-abbreviation') + '</p>'
-        confirm_html_code+= '<p>' + self.request.get('convert-to') + '</p>'
-        confirm_html_code+= '<p>' + self.request.get('to-unit') + '</p>'
+        confirm_html_code+= '<p id="type">' + self.request.get('unit-type') + '</p>'
+        confirm_html_code+= '<p id="name">' + self.request.get('unit-name') + '</p>'
+        confirm_html_code+= '<p id="abbreviation">' + self.request.get('unit-abbreviation') + '</p>'
+        confirm_html_code+= '<p id="convert-to">' + self.request.get('convert-to') + '</p>'
+        confirm_html_code+= '<p id="to-unit">' + self.request.get('to-unit') + '</p>'
 
         template_vars['confirm'] = confirm_html_code
 
@@ -161,7 +161,7 @@ class ConfirmedAddUnitHandler(webapp2.RequestHandler):
 
         for unit in convert_type:
             units_list.append(unit.name)
-            values_list.append(str(add_unit_dict['convert_to'] * convert_to_unit.convert_values[convert_to_unit.convert_units.index(unit.name)]))
+            values_list.append(str(float(add_unit_dict['convert_to']) * float(convert_to_unit.convert_values[convert_to_unit.convert_units.index(unit.name)])))
 
             unit.convert_units.append(add_unit_dict['unit_name'])
             unit.convert_values.append(str(float(add_unit_dict['convert_to'] ** -1)))
@@ -172,6 +172,10 @@ class ConfirmedAddUnitHandler(webapp2.RequestHandler):
             abbreviation = add_unit_dict['unit_abbreviation'],
             convert_units = units_list,
             convert_values = values_list).put()
+
+        type = UnitType.query().filter(UnitType.type==add_unit_dict['unit_type']).fetch()[0]
+        type.units.append(add_unit_dict['unit_name'])
+        type.put()
 
         self.redirect('/convert')
 

@@ -4,7 +4,7 @@
 
   </head>
 
-  <body>
+  <body onload="loadCookies(); getUnitsFromType()">
     <form name="form" method="post" action="/confirm-add-unit">
       Unit Type:
       <select id="select-type" name="unit-type" onchange="getUnitsFromType()">
@@ -15,17 +15,17 @@
       <br>
 
       Unit Name:
-      <input name="unit-name" type="text">
+      <input id ="unit-name" name="unit-name" type="text">
       <br>
       <br>
 
       Unit Abbreviation:
-      <input name="unit-abbreviation" type="text">
+      <input id="unit-abbreviation" name="unit-abbreviation" type="text">
       <br>
       <br>
 
-      Convert to SI:
-      <input name="convert-to" type="number">
+      Conversion Factor:
+      <input id="convert-number" name="convert-to" type="number">
       <select id="select-unit" name="to-unit">
         <option class="unit-select" value="" disabled selected hidden>Choose here</option>
       </select>
@@ -35,8 +35,18 @@
       <input type="submit" onclick="return verifyForm()">
     </form>
 
+    <br>
+    <br>
+
+    <form name="back" method="get" action="/convert">
+      <input type="submit" value="Go Back">
+    </form>
+
     <script>
       function getUnitsFromType() {
+        if (document.getElementById("select-type").value === "") {
+          return;
+        }
         let type = document.getElementById("select-type").value;
         let selectUnit = document.getElementById("select-unit");
 
@@ -57,6 +67,10 @@
         selectUnit.appendChild(unitOption);
 
         {{unitCode|safe}}
+
+        if (getCookie('to-unit') !== '') {
+          document.getElementById('select-unit').value = getCookie('to-unit');
+        }
       }
     </script>
 
@@ -97,6 +111,40 @@
         /* submits form if everything is filled */
         return true;
       }
+
+      function getCookie(cookieName) {
+        var name = cookieName + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var cookieArray = decodedCookie.split(";");
+
+        for (let i=0; i<cookieArray.length; i++) {
+          var cookie = cookieArray[i];
+          while (cookie.charAt(0) === " ") {
+            cookie = cookie.substring(1);
+          }
+
+          if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length);
+          }
+        }
+        return "";
+      }
+
+      function loadCookies() {
+        if (getCookie('type')!== '') {
+          document.getElementById('select-type').value = getCookie('type');
+        }
+        if (getCookie('name') !== '') {
+          document.getElementById('unit-name').value = getCookie('name');
+        }
+        if (getCookie('abbreviation') !== '') {
+          document.getElementById('unit-abbreviation').value = getCookie('abbreviation');
+        }
+        if (getCookie('convert-to') !== '') {
+            document.getElementById('convert-number').value = getCookie('convert-to');
+        }
+      }
+
     </script>
   </body>
 
