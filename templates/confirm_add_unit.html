@@ -5,8 +5,8 @@
   <body>
     {{confirm|safe}}
 
-    <button onclick="redirect('/confirmed_add_unit')">Confirm</button>
-    <button onclick="redirect('/add-unit');setAddUnitCookies()">Go Back</button>
+    <button onclick="deleteAllCookies();redirect('/confirmed_add_unit')">Confirm</button>
+    <button onclick="setAddUnitCookies();redirect('/add-unit')">Go Back</button>
 
     <script>
       function redirect(redirectURL) {
@@ -41,6 +41,17 @@
         setCookie('abbreviation', document.getElementById('abbreviation').innerHTML);
         setCookie('convert-to', document.getElementById('convert-to').innerHTML);
         setCookie('to-unit', document.getElementById('to-unit').innerHTML);
+      }
+
+      function deleteAllCookies() {
+        var cookies = document.cookie.split(";");
+
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i];
+          var eqPos = cookie.indexOf("=");
+          var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+          document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        }
       }
     </script>
   </body>

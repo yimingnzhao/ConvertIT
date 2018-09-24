@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+
+  </head>
+
+  <body>
+    <form name="form" method="post" action="/confirm-add-type">
+      Type Name:
+      <input id="type-name" name="type-name" type="text">
+      <br>
+      <br>
+      <br>
+
+      <p>Add Unit 1</p>
+      <br>
+
+      Unit 1 Name:
+      <input id="unit1-name" name="uni1-name" type="text">
+      <br>
+
+      Unit 1 Abbreviation:
+      <input id="unit1-abbreviation" name="uni1-abbreviation" type="text">
+      <br>
+      <br>
+      <br>
+
+      <p>Add Unit 2</p>
+      <br>
+
+      Unit 2 Name:
+      <input id="unit2-name" name="uni2-name" type="text">
+      <br>
+
+      Unit 2 Abbreviation:
+      <input id="unit2-abbreviation" name="uni2-abbreviation" type="text">
+      <br>
+
+      Unit 2 Conversion:
+      <input id="two-to-one" name="two-to-one" type="number">
+      <p id="get-unit-one"></p>
+      <br>
+      <br>
+      <input type="submit" onclick="return verifyForm()">
+    </form>
+
+    <script>
+      function verifyForm() {
+        var form = document.forms['form'];
+
+        /** checks all form elements **/
+        if (form['type-name'] === '') {
+          alert('Please input a type name.');
+          return false;
+        }
+        if (form['unit1-name'] === '') {
+          alert('Please input a name for unit 1.');
+          return false;
+        }
+        if (form['unit1-abbreviation'] === '') {
+          alert('Please input an abbreviation for unit 1.');
+          return false;
+        }
+        if (form['unit2-name'] === '') {
+          alert('Please input a name for unit 2.');
+          return false;
+        }
+        if (form['unit2-abbreviation'] === '') {
+          alert('Please input an abbreviation for unit 2.');
+          return false;
+        }
+        if (form['two-to-one'] === '') {
+          alert('Please input a conversion factor.');
+          return false;
+        }
+
+        /** check if unit type exists **/
+        
+      }
+    </script>
+  </body>
+</html>

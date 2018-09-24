@@ -104,7 +104,7 @@
         /* check if unit name exists */
         var unitsArray = [];
         {{arrayPush|safe}}
-        if (unitsArray.includes(form["unit-name"].value)) {
+        if (unitsArray.includes(form["unit-name"].value.trim())) {
           alert("This unit name already exists.\nPlease input a different unit name.");
           return false;
         }

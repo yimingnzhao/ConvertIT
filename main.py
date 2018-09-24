@@ -180,6 +180,18 @@ class ConfirmedAddUnitHandler(webapp2.RequestHandler):
         self.redirect('/convert')
 
 
+class AddTypeHandler(webapp2.RequestHandler):
+    def get(self):
+        template_vars = {}
+        type_js_code = ''
+
+        existing_types = UnitType.query().fetch()
+        for type in existing_types:
+            type_js_code+= ''
+
+        add_type_template = current_jinja_environment.get_template('templates/add-type.html')
+        self.response.write(add_type_template.render(template_vars))
+
 
 
 
@@ -191,4 +203,5 @@ app = webapp2.WSGIApplication([
     ('/add-unit', AddUnitHandler),
     ('/confirm-add-unit', ConfirmAddUnitHandler),
     ('/confirmed_add_unit', ConfirmedAddUnitHandler),
+    ('/add-type', AddTypeHandler),
 ])
