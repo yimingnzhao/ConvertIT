@@ -15,6 +15,7 @@ current_jinja_environment = jinja2.Environment(
     autoescape=True)
 
 add_unit_dict = {}
+add_type_dict = {}
 
 
 class HomeHandler(webapp2.RequestHandler):
@@ -121,7 +122,7 @@ class AddUnitHandler(webapp2.RequestHandler):
         template_vars['typeCode'] = html_type_code
         template_vars['unitCode'] = js_unit_code
         template_vars['arrayPush'] = js_array_push
-        add_unit_template = current_jinja_environment.get_template('templates/add_unit.html')
+        add_unit_template = current_jinja_environment.get_template('templates/add-unit.html')
         self.response.write(add_unit_template.render(template_vars))
 
 
@@ -145,7 +146,7 @@ class ConfirmAddUnitHandler(webapp2.RequestHandler):
 
         template_vars['confirm'] = confirm_html_code
 
-        confirm_add_unit_template = current_jinja_environment.get_template('templates/confirm_add_unit.html')
+        confirm_add_unit_template = current_jinja_environment.get_template('templates/confirm-add-unit.html')
         self.response.write(confirm_add_unit_template.render(template_vars))
 
 
@@ -185,13 +186,42 @@ class AddTypeHandler(webapp2.RequestHandler):
         template_vars = {}
         type_js_code = ''
 
-        existing_types = UnitType.query().fetch()
+        existing_types = UnitType.query().filter(UnitType.type!='seed-data-test').fetch()
         for type in existing_types:
-            type_js_code+= ''
+            type_js_code+= 'unitTypes.push("' + type.type + '");'
 
+        template_vars['typeJS'] = type_js_code
         add_type_template = current_jinja_environment.get_template('templates/add-type.html')
         self.response.write(add_type_template.render(template_vars))
 
+
+class ConfirmAddTypeHandler(webapp2.RequestHandler):
+    def post(self):
+        template_vars = {}
+        confirm_html_code = ''
+
+        add_type_dict['type_name'] = str(self.request.get('type-name'))
+        add_type_dict['unit1_name'] = str(self.request.get('unit1-name'))
+        add_type_dict['unit1_abbreviation'] = str(self.request.get('unit1-abbreviation'))
+        add_type_dict['unit2_name'] = str(self.request.get('unit2-name'))
+        add_type_dict['unit2_abbreviation'] = str(self.request.get('unit2-abbreviation'))
+        add_type_dict['two_to_one'] = float(self.request.get('two-to-one'))
+
+        confirm_html_code+= '<p id="type-name">' + str(add_type_dict['type_name']) + '</p>'
+        confirm_html_code+= '<p id="unit1-name">' + str(add_type_dict['unit1_name']) + '</p>'
+        confirm_html_code+= '<p id="unit1-abbreviation">' + str(add_type_dict['unit1_abbreviation']) + '</p>'
+        confirm_html_code+= '<p id="unit2-name">' + str(add_type_dict['unit2_name']) + '</p>'
+        confirm_html_code+= '<p id="unit2-abbreviation">' + str(add_type_dict['unit2_abbreviation']) + '</p>'
+        confirm_html_code+= '<p id="two-to-one">' + str(add_type_dict['two_to_one']) + '</p>'
+
+        template_vars['codeHTML'] = confirm_html_code
+        confirm_add_type_template = current_jinja_environment.get_template('templates/confirm-add-type.html')
+        self.request.write(confrim_add_type_template.render(template_vars))
+
+
+class ConfirmedAddTypeHandler(webapp2.RequestHandler):
+    def get(self):
+        self.redirect('/convert')
 
 
 
@@ -204,4 +234,6 @@ app = webapp2.WSGIApplication([
     ('/confirm-add-unit', ConfirmAddUnitHandler),
     ('/confirmed_add_unit', ConfirmedAddUnitHandler),
     ('/add-type', AddTypeHandler),
+    ('/confirm-add-type', ConfirmAddTypeHandler),
+    ('/confirmed-add-type', ConfirmedAddTypeHandler),
 ])

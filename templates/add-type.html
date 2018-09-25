@@ -16,11 +16,11 @@
       <br>
 
       Unit 1 Name:
-      <input id="unit1-name" name="uni1-name" type="text">
+      <input id="unit1-name" name="unit1-name" type="text">
       <br>
 
       Unit 1 Abbreviation:
-      <input id="unit1-abbreviation" name="uni1-abbreviation" type="text">
+      <input id="unit1-abbreviation" name="unit1-abbreviation" type="text" onchange="getUnit1Abbreviation()">
       <br>
       <br>
       <br>
@@ -29,22 +29,30 @@
       <br>
 
       Unit 2 Name:
-      <input id="unit2-name" name="uni2-name" type="text">
+      <input id="unit2-name" name="unit2-name" type="text">
       <br>
 
       Unit 2 Abbreviation:
-      <input id="unit2-abbreviation" name="uni2-abbreviation" type="text">
+      <input id="unit2-abbreviation" name="unit2-abbreviation" type="text">
       <br>
 
       Unit 2 Conversion:
       <input id="two-to-one" name="two-to-one" type="number">
-      <p id="get-unit-one"></p>
+      <p id="get-unit-one" style="display:inline"></p>
       <br>
       <br>
       <input type="submit" onclick="return verifyForm()">
     </form>
 
     <script>
+      function redirect(redirectURL) {
+        document.location.href = redirectURL;
+      }
+
+      function getUnit1Abbreviation() {
+        document.getElementById('get-unit-one').innerHTML = document.getElementById('unit1-abbreviation').value;
+      }
+
       function verifyForm() {
         var form = document.forms['form'];
 
@@ -75,7 +83,15 @@
         }
 
         /** check if unit type exists **/
-        
+        unitTypes = [];
+        {{typeJS|safe}}
+
+        if (unitTypes.includes(form["type-name"].value.trim())) {
+          alert("This type name already exists.\nPlease input a different type name.");
+          return false;
+        }
+
+        return true;
       }
     </script>
   </body>

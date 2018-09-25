@@ -4,7 +4,7 @@
 
   </head>
 
-  <body onload="loadCookies(); getUnitsFromType()">
+  <body onload="loadCookies();getUnitsFromType()">
     <form name="form" method="post" action="/confirm-add-unit">
       Unit Type:
       <select id="select-type" name="unit-type" onchange="getUnitsFromType()">
@@ -38,9 +38,7 @@
     <br>
     <br>
 
-    <form name="back" method="get" action="/convert">
-      <input type="submit" value="Go Back">
-    </form>
+    <button type="button" onclick="setAddUnitCookies(); redirect('/convert')">Go Back</button>
 
     <script>
       function getUnitsFromType() {
@@ -75,6 +73,9 @@
     </script>
 
     <script>
+      function redirect(redirectURL) {
+        document.location.href = redirectURL;
+      }
 
       function verifyForm() {
         var form = document.forms["form"];
@@ -112,6 +113,18 @@
         return true;
       }
 
+      function setCookie(cookieName, cookieValue) {
+        document.cookie = cookieName + "=" + cookieValue + "; path=/";
+      }
+
+      function setAddUnitCookies() {
+        setCookie('type', document.getElementById('select-type').value);
+        setCookie('name', document.getElementById('unit-name').value);
+        setCookie('abbreviation', document.getElementById('unit-abbreviation').value);
+        setCookie('convert-to', document.getElementById('convert-number').value);
+        setCookie('to-unit', document.getElementById('select-unit').value);
+      }
+
       function getCookie(cookieName) {
         var name = cookieName + "=";
         var decodedCookie = decodeURIComponent(document.cookie);
@@ -144,7 +157,6 @@
             document.getElementById('convert-number').value = getCookie('convert-to');
         }
       }
-
     </script>
   </body>
 
